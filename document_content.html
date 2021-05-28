@@ -16,8 +16,8 @@
 <h3 id="jyfDoc-speed">速度</h3>
 <p>速度值会影响移动速度，每<a href="#jyfDoc-frame">帧</a>的移动距离为：</p>
 <pre><code>14 - 9 * exp(-0.005 * 速度)</code></pre>
-<p>速度值会影响攻击速度，不考虑<a href="#jyfDoc-injury">中毒</a>影响，每10000<a href="#jyfDoc-frame">帧</a>的攻击次数为：</p>
-<pre><code>333 - 300 * exp(-0.01 * 速度)</code></pre>
+<p>速度值会影响攻击速度，不考虑<a href="#jyfDoc-stap">封穴</a>影响，每10000<a href="#jyfDoc-frame">帧</a>的攻击次数为：</p>
+<pre><code>400 - 360 * exp(-0.005 * 速度)</code></pre>
 <p>（速度值为负时按0算）</p>
 <h3 id="jyfDoc-skill">兵器值（即拳掌、御剑、耍刀、奇门）</h3>
 <p>兵器值对伤害的影响为：</p>
@@ -65,13 +65,22 @@
 <p>在攻击时，如果守方附近有攻方队友会对应的合击武功，就能触发合击效果，提升本次攻击的各项属性。</p>
 <h2>其他属性</h2>
 <h3 id="jyfDoc-injury">附加内伤</h3>
-<p>攻方的“附加内伤”会增加守方对应的内伤值，内伤值范围是0-9999。内伤值会增加所受到的伤害，超过1000时效果和1000相同，比例为：</p>
+<p>攻方的“附加内伤”会增加守方对应的内伤值，内伤值范围是0-2000。内伤值会增加所受到的伤害，超过1000时效果和1000相同。</p>
+<p><a href="#jyfDoc-closedSkill">近程拳掌</a>增加伤害的比例为：</p>
 <pre><code>min(内伤值, 1000) / 1000</code></pre>
+<p>其他武功增加伤害的比例为：</p>
+<pre><code>min(内伤值, 1000) / 1600</code></pre>
 <p>若守方触发“<a href="#jyfDoc-dodge">闪躲趋避</a>”或“<a href="#jyfDoc-breakMove">料敌机先</a>”，则无法增加守方的内伤值。</p>
 <p>若攻方使用的招式内力不够，也无法增加守方的内伤值。</p>
+<h3 id="jyfDoc-stap">附加封穴</h3>
+<p>攻方的“附加封穴”有20%概率增加守方对应的封穴值，封穴值范围是0-2000。封穴值会降低攻击速度，超过1000时效果和1000相同，比例为：</p>
+<pre><code>min(封穴值, 1000) / (min(封穴值, 1000) + 1000)</code></pre>
+<p>同时，封穴值不低于1000时，不能触发“<a href="#jyfDoc-dodge">闪躲趋避</a>”。</p>
+<p>若守方触发“<a href="#jyfDoc-dodge">闪躲趋避</a>”或“<a href="#jyfDoc-breakMove">料敌机先</a>”，则无法增加守方的封穴值。</p>
+<p>若攻方使用的招式内力不够，也无法增加守方的封穴值。</p>
 <h3 id="jyfDoc-poison">附加中毒</h3>
-<p>攻方的“附加中毒”会增加守方对应的中毒值，中毒值范围是0-9999。中毒值会降低攻击速度，超过1000时效果和1000相同，比例为：</p>
-<pre><code>min(中毒值, 1000) / (min(中毒值, 1000) + 1000)</code></pre>
+<p>攻方的“附加中毒”会增加守方对应的中毒值，中毒值范围是0-2000。中毒值会不断扣除当前生命值，超过1000时效果和1000相同。每3<a href="#jyfDoc-frame">帧</a>扣除：</p>
+<pre><code>⌊min(中毒值, 1000) / 100⌋</code></pre>
 <p>若守方触发“<a href="#jyfDoc-dodge">闪躲趋避</a>”或“<a href="#jyfDoc-breakMove">料敌机先</a>”，则无法增加守方的中毒值。</p>
 <p>若攻方使用的招式内力不够，也无法增加守方的中毒值。</p>
 <h3 id="jyfDoc-critical">暴起一击</h3>
@@ -80,6 +89,7 @@
 <h3 id="jyfDoc-doubleHit">左右开弓</h3>
 <p>有一定概率攻击两次（即互搏），概率为：</p>
 <pre><code>左右开弓 / 100</code></pre>
+<p>部分武功可能无法触发“左右开弓”。</p>
 <h3 id="jyfDoc-borrowStrength">借力打力</h3>
 <p>攻方的“借力打力”会把上次攻击之后受到的伤害按比例返还给其中一个守方，比例为：</p>
 <pre><code>借力打力 / (100 + 借力打力)</code></pre>
@@ -122,6 +132,9 @@
 <h3 id="jyfDoc-injuryRecovery">内伤回复</h3>
 <p>角色的“内伤回复”会不断减少该角色的内伤值，每3<a href="#jyfDoc-frame">帧</a>减少</p>
 <pre><code>内伤回复</code></pre>
+<h3 id="jyfDoc-stapRecovery">封穴回复</h3>
+<p>角色的“封穴回复”会不断减少该角色的封穴值，每3<a href="#jyfDoc-frame">帧</a>减少</p>
+<pre><code>封穴回复 + ⌊当前内力值 / 3000⌋</code></pre>
 <h3 id="jyfDoc-poisonRecovery">中毒回复</h3>
 <p>角色的“中毒回复”会不断减少该角色的中毒值，每3<a href="#jyfDoc-frame">帧</a>减少</p>
 <pre><code>中毒回复</code></pre>
@@ -141,10 +154,11 @@
 <h3 id="jyfDoc-dodge">闪躲趋避</h3>
 <p>守方的“闪躲趋避”有一定概率闪避某次攻击，概率为：</p>
 <pre><code>闪躲趋避 / (100 + 闪躲趋避)</code></pre>
+<p>守方的<a href="#jyfDoc-stap">封穴值</a>不低于1000时，无法触发“闪躲趋避”。</p>
 <h3 id="jyfDoc-counterattack">借招还招</h3>
 <p>守方的“借招还招”在受到攻击后，有一定概率以相同武功反击攻方，概率为：</p>
 <pre><code>借招还招 / (100 + 借招还招)</code></pre>
-<p>守方的“借招还招”触发间隔为20<a href="#jyfDoc-frame">帧</a>。可与“<a href="#jyfDoc-dodge">闪躲趋避</a>”、“<a href="#jyfDoc-mpDefense">真气护体</a>”、“<a href="#jyfDoc-slapRebound">倒刺护体</a>”、“<a href="#jyfDoc-damageRebound">内力反震</a>”同时触发。</p>
+<p>守方的“借招还招”触发间隔为10<a href="#jyfDoc-frame">帧</a>。可与“<a href="#jyfDoc-dodge">闪躲趋避</a>”、“<a href="#jyfDoc-mpDefense">真气护体</a>”、“<a href="#jyfDoc-slapRebound">倒刺护体</a>”、“<a href="#jyfDoc-damageRebound">内力反震</a>”同时触发。</p>
 <p>反击时，武功等级按照被反击方算，反击方对应招式的兵器值额外增加：</p>
 <pre><code>借招还招 * 2</code></pre>
 <p>其他按照反击方攻击被反击方计算（比如，使用反击方的攻击和被反击方的防御），这次反击不可触发“<a href="#jyfDoc-shiftAttack">牵引挪移</a>”和“借招还招”，但仍然可触发“<a href="#jyfDoc-accuracy">出其不意</a>”、“<a href="#jyfDoc-dodge">闪躲趋避</a>”等效果。具体规则可参考<a href="#jyfDoc-decisionMaker">逻辑判定</a>。</p>
@@ -170,7 +184,7 @@
 <p>内力不足时，会把内力扣到0，剩下伤害扣除生命值。</p>
 <p>守方的“真气护体”触发间隔为40<a href="#jyfDoc-frame">帧</a>。</p>
 <h3 id="jyfDoc-strengthAccumulation">积蓄劲力</h3>
-<p>攻方的“积蓄劲力”会不断增加蓄力值，蓄力值满2000后触发“蓄力一击”，造成1.5倍伤害。每3<a href="#jyfDoc-frame">帧</a>增加的蓄力值为：</p>
+<p>攻方的“积蓄劲力”会不断增加蓄力值，蓄力值满1500后触发“蓄力一击”，造成1.5倍伤害。每3<a href="#jyfDoc-frame">帧</a>增加的蓄力值为：</p>
 <pre><code>积蓄劲力</code></pre>
 <h3 id="jyfDoc-mpAbsorb">内力吸取</h3>
 <p>在攻击和被攻击时吸取内力，吸取的内力值为：</p>
