@@ -1,0 +1,32 @@
+{
+  "name": "金庸群侠传",
+  "short_name": "金庸群侠传",
+  "description": "金庸群侠传网页游戏",
+  "lang": "zh-CN",
+  "start_url": "./0.6.168/",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#050301",
+  "theme_color": "#1c1008",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
